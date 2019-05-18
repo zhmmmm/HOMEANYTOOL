@@ -212,10 +212,19 @@ int Main()
 {
 
 
-	BASS_Init(-1, 44100, 0, NULL, 0);
-	HSTREAM hs = BASS_StreamCreateFile(FALSE, "dj - Ô¤Ä±.mp3", 0, 0, BASS_SAMPLE_LOOP);//´ÓÎÄ¼þ¼ÓÔØÒôÀÖ
-	BASS_ChannelPlay(hs, TRUE);
+	
+	ATA->InitAudioEngine();
+	ATA->SetVolume(100);
+	ATA->LoadMusics("dj - Ô¤Ä±.mp3", BASS_SAMPLE_MONO);
+	printf("%d\n",ATA->PlayMusics("Ò¹É«.flac"));
 
+	int p = 0;
+	std::cin >> p;
+	printf("%d\n", ATA->PauseMusics("Ò¹É«.flac"));
+
+	std::cin >> p;
+	ATA->StopMusics("Ò¹É«.flac");
+	printf("%d\n", ATA->PlayMusics("dj - Ô¤Ä±.mp3",FALSE));
 
 
 

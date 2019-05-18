@@ -4,7 +4,8 @@
 
 #pragma comment(lib,"BASS\\lib\\bass.lib")
 
-CMyBass::~CMyBass(){
+CMyBass::~CMyBass()
+{
 	if (!m_MusicList.empty())
 	{
 		for (MLI it=m_MusicList.begin();it!=m_MusicList.end();++it)
