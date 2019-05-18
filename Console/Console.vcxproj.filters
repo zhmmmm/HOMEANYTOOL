@@ -21,9 +21,15 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ATBAudioEngine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PASSWORD.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ATBAudioEngine.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

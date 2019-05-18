@@ -4,6 +4,7 @@
 #include <winsock.h>
 #pragma comment(lib,"wsock32.lib")
 #include <Windows.h>
+#include "ATBAudioEngine.h"
 
 #define Main main
 
@@ -209,6 +210,13 @@ void ComputerName_Ip(char *ch0, char *ch1)
 
 int Main()
 {
+
+
+	BASS_Init(-1, 44100, 0, NULL, 0);
+	HSTREAM hs = BASS_StreamCreateFile(FALSE, "dj - 预谋.mp3", 0, 0, BASS_SAMPLE_LOOP);//从文件加载音乐
+	BASS_ChannelPlay(hs, TRUE);
+
+
 
 
 

@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ATBAudioEngine.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PASSWORD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ATBAudioEngine.h" />
     <ClInclude Include="PASSWORD.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
