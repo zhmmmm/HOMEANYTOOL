@@ -506,6 +506,11 @@ void ATEngine::ATENGINE_MatrixMode(unsigned int MatrixMode)
 	glMatrixMode(MatrixMode);
 	glLoadIdentity();
 }
+void ATEngine::ATENGINE_MatrixLoadIdentity()
+{
+	//加载单位化
+	glLoadIdentity();
+}
 //=====================================================
 void ATEngine::EnableBase(unsigned int Base)
 {
