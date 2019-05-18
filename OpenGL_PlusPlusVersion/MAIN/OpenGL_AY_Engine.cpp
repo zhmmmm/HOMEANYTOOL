@@ -224,7 +224,7 @@ ATEngine_Variable::ATEngine_Variable()
 	m_ClearColor.B = 0.0f;
 	m_ClearColor.Alpha = 1.0f;
 
-	m_glClear = GL_COLOR_BUFFER_BIT;
+	m_glClear = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
 	m_EnablePoint = FALSE;
 

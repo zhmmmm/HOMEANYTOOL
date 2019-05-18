@@ -123,6 +123,9 @@ public:
 	void SetClearColor(float R = 0.0f, float G = 0.0f, float B = 0.0f, float Alpha = 1.0f);
 	ATRGBA *GetClearColor();
 
+
+	//GL_COLOR_BUFFER_BIT 表示要清空像素信息
+	//GL_DEPTH_BUFFER_BIT 表示要清空深度缓冲信息（每一次都使用远截面的z值为清除数值）
 	void SetglClear(unsigned int glClear = GL_COLOR_BUFFER_BIT);
 	unsigned int *GetglClear();
 
