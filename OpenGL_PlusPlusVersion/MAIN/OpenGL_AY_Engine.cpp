@@ -310,6 +310,16 @@ void ATEngine::ATENGINE_Enable(unsigned int FUNCTION)
 	glEnable(FUNCTION);
 }
 
+void ATEngine::ATENGINE_Disable(unsigned int FUNCTION)
+{
+	glDisable(FUNCTION);
+}
+
+void ATEngine::ATENGINE_EnableCilentState(unsigned int FUNCTION)
+{
+	glEnableClientState(FUNCTION);
+}
+
 void ATEngine::ATENGINE_CULLFACE(unsigned int CULLFACE)
 {
 	glCullFace(CULLFACE);
