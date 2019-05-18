@@ -20,62 +20,7 @@ void Scene::Update()
 		ATATRGB::GREEN, ATATPOS3D(+105, -105, 0),
 		ATATRGB::WHITE, ATATPOS3D(+105, +105, 0));
 	AT->DrawEnd();
-	AT->Rotate(Angle++, 1, 0, 0);
 
-	//上
-	glBegin(GL_QUADS);
-	glColor3ub(255, 0, 0);
-	glVertex3f(-50, +50, -50);
-	glVertex3f(-50, +50, +50);
-	glVertex3f(+50, +50, +50);
-	glVertex3f(+50, +50, -50);
-	glEnd();
-
-	//下
-	glBegin(GL_QUADS);
-	glColor3ub(0, 255, 0);
-	glVertex3f(-50, -50, -50);
-	glVertex3f(+50, -50, -50);
-	glVertex3f(+50, -50, +50);
-	glVertex3f(-50, -50, +50);
-	glEnd();
-
-	//左
-	glBegin(GL_QUADS);
-	glColor3ub(0, 0, 255);
-	glVertex3f(-50, +50, -50);
-	glVertex3f(-50, -50, -50);
-	glVertex3f(-50, -50, +50);
-	glVertex3f(-50, +50, +50);
-	glEnd();
-
-	//右
-	glBegin(GL_QUADS);
-	AT->Color3(0, 255, 255);
-	glVertex3f(+50, +50, -50);
-	glVertex3f(+50, +50, +50);
-	glVertex3f(+50, -50, +50);
-	glVertex3f(+50, -50, -50);
-	glEnd();
-
-	//后
-	glBegin(GL_QUADS);
-	glColor3ub(255, 0, 255);
-	glVertex3f(-50, +50, -50);
-	glVertex3f(+50, +50, -50);
-	glVertex3f(+50, -50, -50);
-	glVertex3f(-50, -50, -50);
-	glEnd();
-
-	//前
-	glBegin(GL_QUADS);
-	glColor3ub(255, 255, 0);
-	glVertex3f(-50, +50, +50);
-	glVertex3f(-50, -50, +50);
-	glVertex3f(+50, -50, +50);
-	glVertex3f(+50, +50, +50);
-	glEnd();
-	AT->SetCamer(45,1,0.3,1000);
 }
 
 void Scene::OnOrdinaryKeyboardDownEvent(unsigned char Key, int X, int Y)
