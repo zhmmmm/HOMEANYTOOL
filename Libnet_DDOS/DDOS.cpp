@@ -80,7 +80,7 @@ DOS::DOS()
 	//填充TCP首部 
 	m_TCPHeader.th_dport = htons(m_Port); //16位目的端口号
 	m_TCPHeader.th_sport = htons(12345); //16位源端口号 
-	m_TCPHeader.th_seq = 0;                         //SYN序列号
+	m_TCPHeader.th_seq = htons(123);        //SYN序列号
 	m_TCPHeader.th_ack = 0;                         //ACK序列号置为0
 	//TCP长度和保留位
 	m_TCPHeader.th_lenres = (sizeof(m_TCPHeader) / sizeof(unsigned long) << 4 | 0);
@@ -103,7 +103,7 @@ DOS::DOS()
 	memcpy(m_Sendto_Buffer, &m_IPHeader, sizeof(IP_HEADER));
 	memcpy(m_Sendto_Buffer + sizeof(IP_HEADER), &m_TCPHeader,
 		sizeof(TCP_HEADER));
-	//memcpy(m_Sendto_Buff + sizeof(IP_HEADER) + sizeof(TCP_HEADER),
+	//memcpy(m_Sendto_Buffer + sizeof(IP_HEADER) + sizeof(TCP_HEADER),
 	//	m_send_data, sizeof(m_send_data));
 }
 DOS::~DOS()
