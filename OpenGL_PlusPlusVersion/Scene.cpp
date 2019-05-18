@@ -1,3 +1,6 @@
+/*
+³¡¾°ËµÃ÷:==>
+*/
 #include "Scene.h"
 
 void Scene::Start()
