@@ -29,14 +29,6 @@ void Scene::Update()
 	std::cout << "总时间："<<ATA->GetTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3") << std::endl;
 	std::cout <<"进度时间："<<ATA->GetCurTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3")<< std::endl;
 
-
-	static int s = 0;
-	if (s == 0)
-	{
-		ATA->SetTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3",0.2);
-		s = 1;
-	}
-
 	int X = -200;
 	static float Buf[128] = { 0 };
 	ATA->GetAudioStreamData("res\\Audio\\Musics\\舞曲大帝国.mp3", Buf);
