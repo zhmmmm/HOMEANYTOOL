@@ -554,10 +554,15 @@ void FUNCTION::PlayFrameAnimation(CDC *pCDC)
 
 void FUNCTION::PlayerMusic()
 {
+	//MUSIC->Init();
+
+
 	CFileDialog CFileDialog(TRUE, NULL, NULL, 0, (LPCTSTR)_TEXT("音乐文件(*.mp3)|*.mp3|所有文件(*.*)|*.*||"));
 
 	if (CFileDialog.DoModal() == IDOK)
 	{
+		//MUSIC->LoadMusic(MAIN::CString_To_String(CFileDialog.GetPathName()));
+		//MUSIC->PlayMusic(MAIN::CString_To_String(CFileDialog.GetPathName()));
 		ATA->DeleteAllMusicAndSounds();
 		ATA->PlayMusics(MAIN::CString_To_String(CFileDialog.GetPathName()));
 	}
