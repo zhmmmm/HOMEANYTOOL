@@ -92,9 +92,9 @@ BOOL ATBAE::SetVolume(int Volume)
 {
 	if (m_IsInit)
 	{
-		if (Volume < 0)
+		if (Volume <= 0)
 		{
-			Volume = 1;
+			Volume = 0;
 		}
 		else if (Volume >= 100)
 		{

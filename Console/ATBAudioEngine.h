@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 #include "BASS\\include\\bass.h"
-#pragma comment(lib,"BASS\\lib\\bass.lib")
+#pragma comment(lib,"../../MAIN\\ATBAudioEngine\\BASS\\lib\\bass.lib")
 
 using namespace std;
 
@@ -53,22 +53,12 @@ public:
 		//	ATATRGB::RED, ATATPOS3D(+105, +105, 0));
 		//AT->DrawEnd();
 		int X = -200;
-		static char Buf[128] = { 0 };
+		static float Buf[128] = { 0 };
 		ATA->GetAudioStreamData("res\\Audio\\Musics\\ҹɫ.flac", Buf);
 		for (int i = 0; i < 128; i++)
 		{
-			if (Buf[i])
-			{
-				if (Buf[i] < 0)
-				{
-					Buf[i] = 0;
-				}
-				else
-				{
-					Buf[i] %= Y;
-				}
-				Y = (int)Buf[i];
-			}
+			Y = Buf[i] * 1000;
+
 			AT->CreateQuadrangle(
 				ATATRGB::RED, ATATPOS3D(X, Y, 0),
 				ATATRGB::WHITE, ATATPOS3D(X, 0, 0),
