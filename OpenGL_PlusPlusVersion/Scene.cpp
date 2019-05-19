@@ -26,9 +26,7 @@ void Scene::Update()
 	this->m_CameraPos_Y = 0;
 
 	CLS;
-
 	std::cout << "总时间："<<ATA->GetTimeMinute("res\\Audio\\Musics\\夜色.flac") << std::endl;
-
 	std::cout <<"进度时间："<<ATA->GetCurTimeMinute("res\\Audio\\Musics\\夜色.flac")<< std::endl;
 
 
