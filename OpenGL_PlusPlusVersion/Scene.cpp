@@ -21,25 +21,25 @@ static int Y = 190;
 
 void Scene::Update()
 {
-	ATA->PlayMusics_s("res\\Audio\\Musics\\夜色.flac");
+	ATA->PlayMusics_s("res\\Audio\\Musics\\舞曲大帝国.mp3");
 	Camera::CameraToWorld(this);
 	this->m_CameraPos_Y = 0;
 
 	CLS;
-	std::cout << "总时间："<<ATA->GetTimeMinute("res\\Audio\\Musics\\夜色.flac") << std::endl;
-	std::cout <<"进度时间："<<ATA->GetCurTimeMinute("res\\Audio\\Musics\\夜色.flac")<< std::endl;
+	std::cout << "总时间："<<ATA->GetTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3") << std::endl;
+	std::cout <<"进度时间："<<ATA->GetCurTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3")<< std::endl;
 
 
 	static int s = 0;
 	if (s == 0)
 	{
-		ATA->SetTimeMinute("res\\Audio\\Musics\\夜色.flac",3.0);
+		ATA->SetTimeMinute("res\\Audio\\Musics\\舞曲大帝国.mp3",0.2);
 		s = 1;
 	}
 
 	int X = -200;
 	static float Buf[128] = { 0 };
-	ATA->GetAudioStreamData("res\\Audio\\Musics\\夜色.flac", Buf);
+	ATA->GetAudioStreamData("res\\Audio\\Musics\\舞曲大帝国.mp3", Buf);
 	for (int i = 0; i < 128; i++)
 	{
 
