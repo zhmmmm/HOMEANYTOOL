@@ -56,6 +56,9 @@ void CANYTOOLDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT2, m_VideoPath);
 	DDX_Control(pDX, IDC_EDIT6, m_ImageType);
 	DDX_Control(pDX, IDC_EDIT7, m_FrameNumber);
+	DDX_Control(pDX, IDC_PROGRESS1, m_MusicProgress);
+	DDX_Control(pDX, IDC_SLIDER1, m_EditMusicProgress);
+	DDX_Control(pDX, IDC_SLIDER2, m_EditMusicVolume);
 }
 
 BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
@@ -81,6 +84,7 @@ BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_MFCBUTTON6, &CANYTOOLDlg::OnBnClicked_OpenVideoFile)
 	ON_BN_CLICKED(IDC_BUTTON5, &CANYTOOLDlg::OnBnClicked_Sound__R)
 	ON_BN_CLICKED(IDC_MFCBUTTON7, &CANYTOOLDlg::OnBnClicked_PlayMusic)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER2, &CANYTOOLDlg::OnNMCustomdrawSlider2)
 END_MESSAGE_MAP()
 
 
@@ -210,6 +214,7 @@ void CANYTOOLDlg::Init_DATA()
 	MAIN_M_FUNCTION->INIT_CEditControl(&m_ImageType, CString("ImageType"));
 	MAIN_M_FUNCTION->INIT_CEditControl(&m_FrameNumber, CString("FramePerSecond"));
 
+	m_EditMusicVolume.SetRange(0, 100,TRUE);
 }
 //===============================================
 void CANYTOOLDlg::OnBnClicked_StartLOIC()
@@ -256,6 +261,8 @@ void CANYTOOLDlg::OnBnClicked_Sound__R()
 void CANYTOOLDlg::OnBnClicked_PlayMusic()
 {
 	MAIN_M_FUNCTION->PlayerMusic();
+	m_MusicProgress.SetRange(0, 100);
+	m_MusicProgress.SetPos(40);
 }
 
 //================================================
@@ -333,9 +340,12 @@ void CANYTOOLDlg::OnTimer(UINT_PTR nIDEvent)
 }
 
 
-
-
-
-
-
-
+void CANYTOOLDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	std::cout << pNMHDR->code << std::endl;
+	std::cout << pNMHDR->idFrom << std::endl;
+	std::cout << *pResult << std::endl;
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+}

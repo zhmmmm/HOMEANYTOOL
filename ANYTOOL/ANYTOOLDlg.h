@@ -68,8 +68,9 @@ public:
 	CEdit m_VideoPath;
 	CEdit m_ImageType;
 	CEdit m_FrameNumber;
-private:
-	CBitmap m_CBitmap;
 public:
-
+	CProgressCtrl m_MusicProgress;
+	CSliderCtrl m_EditMusicProgress;
+	CSliderCtrl m_EditMusicVolume;
+	afx_msg void OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult);
 };
