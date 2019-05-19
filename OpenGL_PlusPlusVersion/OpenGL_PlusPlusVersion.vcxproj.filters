@@ -46,6 +46,9 @@
     <Filter Include="ATEngine\Math\Vector3D_Matrix4D">
       <UniqueIdentifier>{44fce78b-fb2f-4d7d-8b8a-6b766c23c41c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ATEngine\ATBAudioEngine">
+      <UniqueIdentifier>{94692dc5-5cd0-4c8b-9df4-4236a7134414}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,6 +102,9 @@
     <ClCompile Include="MAIN\Camera.cpp">
       <Filter>ATEngine\ATEngineSource</Filter>
     </ClCompile>
+    <ClCompile Include="MAIN\ATBAudioEngine\ATBAudioEngine.cpp">
+      <Filter>ATEngine\ATBAudioEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MAIN\OpenGL_AY_Engine.h">
@@ -148,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="MAIN\Camera.h">
       <Filter>ATEngine\ATEngineHead</Filter>
+    </ClInclude>
+    <ClInclude Include="MAIN\ATBAudioEngine\ATBAudioEngine.h">
+      <Filter>ATEngine\ATBAudioEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

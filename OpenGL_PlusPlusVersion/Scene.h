@@ -58,6 +58,9 @@ public:
 	virtual void Update();
 	virtual void End();
 
+	//普通键盘按键回调
 	virtual void OnOrdinaryKeyboardDownEvent(unsigned char Key, int X, int Y);
+	//功能键盘按键回调
+	virtual void OnSpecialKeyboardDownEvent(int Key, int X, int Y);
 	virtual void OnMouseMoveEvent(int Mouse_X, int Mouse_Y);
 };

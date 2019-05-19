@@ -212,19 +212,14 @@ int Main()
 {
 
 
-	
+
 	ATA->InitAudioEngine();
-	ATA->SetVolume(100);
-	ATA->LoadMusics("dj - 预谋.mp3", BASS_SAMPLE_MONO);
-	printf("%d\n",ATA->PlayMusics("夜色.flac"));
+	ATA->PlayMusics_s("舞曲大帝国.mp3");
+	std::cout << "总时间：" << ATA->GetTimeMinute("舞曲大帝国.mp3") << std::endl;
 
-	int p = 0;
-	std::cin >> p;
-	printf("%d\n", ATA->PauseMusics("夜色.flac"));
+	std::cout << "进度时间：" << ATA->GetCurTimeMinute("舞曲大帝国.mp3") << std::endl;
 
-	std::cin >> p;
-	ATA->StopMusics("夜色.flac");
-	printf("%d\n", ATA->PlayMusics("dj - 预谋.mp3",FALSE));
+	ATA->SetTimeMinute("舞曲大帝国.mp3", 3.0);
 
 
 

@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MAIN\ATBAudioEngine\ATBAudioEngine.cpp" />
     <ClCompile Include="MAIN\BITMAP.cpp" />
     <ClCompile Include="MAIN\Camera.cpp" />
     <ClCompile Include="MAIN\Gadget\Gadget.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="ThirdPartyLibraries\CPLUSPLUS_SRC\std_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MAIN\ATBAudioEngine\ATBAudioEngine.h" />
     <ClInclude Include="MAIN\BITMAP.h" />
     <ClInclude Include="MAIN\Camera.h" />
     <ClInclude Include="MAIN\Gadget\Gadget.h" />

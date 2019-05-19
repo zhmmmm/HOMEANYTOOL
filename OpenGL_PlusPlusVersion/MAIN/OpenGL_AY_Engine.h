@@ -14,6 +14,8 @@
 
 #define ATVARIABLE       ATEngine_Variable::Interface()
 
+#define CLS system("cls");
+
 #define ATENGINE_MAINDRAW(MAINDRAW) \
                ATENGINE->ATENGINE_OnRuning(MAINDRAW);
 
@@ -327,7 +329,7 @@ public:
 		1000.0);//远截面距离
 	*/
 	//设置摄像机参数
-	void SetCamer(double Fovy,double Aspect,double ZNear,double ZFar);
+	void SetCamer(double Fovy = 90.0, double Aspect = 1.0, double ZNear = 0.3, double ZFar = 1000.0);
 
 	//::::::::::::::::旋转:平移:::::::::::::::::::::::::::::::::::::::需要手动设置矩阵模式
 	void ATENGINE_MatrixMode(unsigned int MatrixMode = GL_MODELVIEW);
@@ -533,10 +535,21 @@ public:
 	//删除绘图列表
 	void DeleteDrawList(unsigned int DrawListID, unsigned int Number);
 public:
+	/*
+		//如果float 达不到要求可以重载double
+		:::::::::::::::::::::::::::::::::::::===>++++++d
+	*/
 	void Translate(float X, float Y, float Z);
 	void Translate(ATATPOS3D ATATPos3D);
 	void Rotate(float Angle, float X, float Y, float Z);
 	void Rotate(float Angle, ATATPOS3D ATATPos3D);
+	void SetScaleX(float X);
+	void SetScaleY(float Y);
+	void SetScaleZ(float Z);
+	void SetScale(float X, float Y);
+	void SetScale(float X, float Y, float Z);
+	void SetScale(ATATSCALE2D ATATScale2D);
+	void SetScale(ATATSCALE3D ATATScale3D);
 };
 
 

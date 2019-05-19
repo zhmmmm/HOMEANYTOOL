@@ -7,22 +7,59 @@ void Scene::Start()
 {
 	S = new Sprite("1.bmp");
 
-	m_Windows_X = 10;
-	m_Windows_Y = 10;
-
+	this->m_Windows_X = 10;
+	this->m_Windows_Y = 10;
+	this->m_WindowsWidth = 800;
+	this->m_WindowsHeight = 600;
 
 }
 
+
+static int W = 3;
+static int WSpace = 1;
+static int Y = 190;
+
 void Scene::Update()
 {
+	ATA->PlayMusics_s("res\\Audio\\Musics\\夜色.flac");
 	Camera::CameraToWorld(this);
-	AT->Rotate(Angle++,0,0,1);
-	AT->CreateQuadrangle(
-		ATATRGB::RED, ATATPOS3D(-105, +105, 0),
-		ATATRGB::YELLOW, ATATPOS3D(-105, -105, 0),
-		ATATRGB::GREEN, ATATPOS3D(+105, -105, 0),
-		ATATRGB::WHITE, ATATPOS3D(+105, +105, 0));
+	this->m_CameraPos_Y = 0;
+
+	CLS;
+
+	std::cout << "总时间："<<ATA->GetTimeMinute("res\\Audio\\Musics\\夜色.flac") << std::endl;
+
+	std::cout <<"进度时间："<<ATA->GetCurTimeMinute("res\\Audio\\Musics\\夜色.flac")<< std::endl;
+
+
+	static int s = 0;
+	if (s == 0)
+	{
+		ATA->SetTimeMinute("res\\Audio\\Musics\\夜色.flac",3.0);
+		s = 1;
+	}
+
+	int X = -200;
+	static float Buf[128] = { 0 };
+	ATA->GetAudioStreamData("res\\Audio\\Musics\\夜色.flac", Buf);
+	for (int i = 0; i < 128; i++)
+	{
+
+		Y = Buf[i] * 1000;
+
+		AT->CreateQuadrangle(
+			ATATRGB::RED, ATATPOS3D(X, Y, 0),
+			ATATRGB::WHITE, ATATPOS3D(X, 0, 0),
+			ATATRGB::WHITE, ATATPOS3D(X + W, 0, 0),
+			ATATRGB::RED, ATATPOS3D(X + W, Y, 0));
+
+		X = X + W + WSpace;
+		Y = 190;
+
+	}
 	AT->DrawEnd();
+	ZeroMemory(Buf, 128);
+
 
 }
 
@@ -59,6 +96,18 @@ void Scene::OnOrdinaryKeyboardDownEvent(unsigned char Key, int X, int Y)
 	if (Key == '\r')
 	{
 		exit(0);
+	}
+}
+void Scene::OnSpecialKeyboardDownEvent(int Key, int X, int Y)
+{
+	std::cout << "功能按下！" << Key << " X = " << X << " Y = " << Y << std::endl;
+	if (Key == 101)
+	{
+		ATA->VolumeAdd();
+	}
+	if (Key == 103)
+	{
+		ATA->VolumeReduce();
 	}
 }
 void Scene::OnMouseMoveEvent(int Mouse_X, int Mouse_Y)

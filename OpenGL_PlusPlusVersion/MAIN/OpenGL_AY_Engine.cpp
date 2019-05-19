@@ -1002,3 +1002,31 @@ void ATEngine::Rotate(float Angle, ATATPOS3D ATATPos3D)
 {
 	glRotatef(Angle, ATATPos3D.Get_X(), ATATPos3D.Get_Y(), ATATPos3D.Get_Z());
 }
+void ATEngine::SetScaleX(float X)
+{
+	glScalef(X, 1.0f, 1.0f);
+}
+void ATEngine::SetScaleY(float Y)
+{
+	glScalef(1.0f, Y, 1.0f);
+}
+void ATEngine::SetScaleZ(float Z)
+{
+	glScalef(1.0f, 1.0f, Z);
+}
+void ATEngine::SetScale(float X, float Y)
+{
+	glScalef(X, Y, 1.0f);
+}
+void ATEngine::SetScale(float X, float Y, float Z)
+{
+	glScalef(X, Y, Z);
+}
+void ATEngine::SetScale(ATATSCALE2D ATATScale2D)
+{
+	glScalef(ATATScale2D.Get_X(), ATATScale2D.Get_Y(), 1.0f);
+}
+void ATEngine::SetScale(ATATSCALE3D ATATScale3D)
+{
+	glScalef(ATATScale3D.Get_X(), ATATScale3D.Get_Y(), ATATScale3D.Get_Z());
+}

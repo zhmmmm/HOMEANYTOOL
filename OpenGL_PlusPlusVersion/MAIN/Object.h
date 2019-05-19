@@ -7,6 +7,8 @@ public:
 	int m_Windows_Y = 100;
 	int m_WindowsWidth = 800;
 	int m_WindowsHeight = 600;
+	int m_CurWindowsWidth = 0;
+	int m_CurWindowsHeight = 0;
 
 	//摄像机看向的位置
 	float m_LookAt_X = 0;

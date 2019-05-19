@@ -1,9 +1,14 @@
 #include "ATBAudioEngine.h"
+
+ATBAE::ATBAE()
+{
+	ATBAE::InitAudioEngine();
+}
 ATBAE::ATBAE(const ATBAE& that)
 {
 	//this->... = than...;
 }
-ATBAE& ATBAE::operator = (const ATBAE& that) 
+ATBAE& ATBAE::operator = (const ATBAE& that)
 {
 	//this->... = than...;
 	return *this;
@@ -24,6 +29,10 @@ BOOL ATBAE::InitAudioEngine()
 {
 	if (!m_IsInit)
 	{
+		if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+		{
+			return FALSE;
+		}
 		if (BASS_Init(-1, SAMPLING_RATE, BASS_DEVICE_3D, NULL, NULL))
 		{
 			m_IsInit = TRUE;
@@ -83,18 +92,36 @@ BOOL ATBAE::SetVolume(int Volume)
 {
 	if (m_IsInit)
 	{
-		if (Volume < 0 || Volume > 100)
+		if (Volume < 0)
+		{
+			Volume = 1;
+		}
+		else if (Volume >= 100)
 		{
 			Volume = 100;
 		}
 		m_Volume = (unsigned long)Volume;
 		return BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, m_Volume * 100);
 	}
+	return FALSE;
 }
 
-DWORD ATBAE::GetVolume()
+HSTREAM ATBAE::GetStream(string AudioFileName)
 {
-	return m_Volume;
+	if (m_IsInit)
+	{
+		map<string, HSTREAM>::iterator it = m_MusicMap.find(AudioFileName);
+		if (it != m_MusicMap.end())
+		{
+			return it->second;
+		}
+		it = m_SoundMap.find(AudioFileName);
+		if (it != m_SoundMap.end())
+		{
+			return it->second;
+		}
+	}
+	return 0;
 }
 
 BOOL ATBAE::VolumeReduce()
@@ -119,6 +146,37 @@ BOOL ATBAE::VolumeAdd()
 	return FALSE;
 }
 
+//=================================================================
+DWORD ATBAE::GetAudioStreamData(string AudioFileName, void *Buffer)
+{
+	if (m_IsInit)
+	{
+		map<string, HSTREAM>::iterator it = m_MusicMap.find(AudioFileName);
+		if (it != m_MusicMap.end())
+		{
+			return BASS_ChannelGetData(it->second, Buffer, 2147483648);
+		}
+		it = m_SoundMap.find(AudioFileName);
+		if (it != m_SoundMap.end())
+		{
+			return BASS_ChannelGetData(it->second, Buffer, 2147483648);
+		}
+	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 BOOL ATBAE::PlayMusics(string MusicFileName, BOOL Restart)
 {
@@ -126,6 +184,7 @@ BOOL ATBAE::PlayMusics(string MusicFileName, BOOL Restart)
 	if (it != m_MusicMap.end())//存在
 	{
 		BASS_ChannelPlay(it->second, Restart);
+		m_IsPlayMusic = TRUE;
 		return TRUE;
 	}
 	if (ATBAE::LoadMusics(MusicFileName))
@@ -138,6 +197,14 @@ BOOL ATBAE::PlayMusics(string MusicFileName, BOOL Restart)
 	}
 	//这个return 只是消除警告,没有实际意义
 	return TRUE;
+}
+BOOL ATBAE::PlayMusics_s(string MusicFileName, BOOL Restart)
+{
+	if (!m_IsPlayMusic)
+	{
+		return ATBAE::PlayMusics(MusicFileName, Restart);
+	}
+	return FALSE;
 }
 BOOL ATBAE::PlaySounds(string SoundFileName)
 {
@@ -158,10 +225,18 @@ BOOL ATBAE::PlaySounds(string SoundFileName)
 	//这个return 只是消除警告,没有实际意义
 	return TRUE;
 }
+BOOL ATBAE::PlayStream(HSTREAM HStream, BOOL Restart)
+{
+	if (m_IsInit)
+	{
+		return BASS_ChannelPlay(HStream, Restart);
+	}
+	return FALSE;
+}
 
 BOOL ATBAE::PauseMusics(string MusicFileName)
 {
-	if (m_IsInit)
+	if (m_IsInit && m_IsPlayMusic)
 	{
 		map<string, HSTREAM>::iterator it = m_MusicMap.find(MusicFileName);
 		if (it != m_MusicMap.end())
@@ -189,7 +264,7 @@ BOOL ATBAE::PauseAllMusics()
 	{
 		if (!m_MusicMap.empty())
 		{
-			for(map<string, HSTREAM>::iterator it = m_MusicMap.begin(); it != m_MusicMap.end(); it++)
+			for (map<string, HSTREAM>::iterator it = m_MusicMap.begin(); it != m_MusicMap.end(); it++)
 			{
 				BASS_ChannelPause(it->second);
 			}
@@ -226,7 +301,7 @@ BOOL ATBAE::PauseAllMusicAndSounds()
 
 BOOL ATBAE::StopMusics(string MusicFileName)
 {
-	if (m_IsInit)
+	if (m_IsInit && m_IsPlayMusic)
 	{
 		map<string, HSTREAM>::iterator it = m_MusicMap.find(MusicFileName);
 		if (it != m_MusicMap.end())
@@ -292,6 +367,7 @@ BOOL ATBAE::StopAllMusicAndSounds()
 
 void ATBAE::DeleteMusic(string MusicFileName)
 {
+	ATBAE::StopMusics(MusicFileName);
 	map<string, HSTREAM>::iterator it = m_MusicMap.find(MusicFileName);
 	if (it != m_MusicMap.end())
 	{
@@ -343,4 +419,71 @@ BOOL ATBAE::FreeATA()
 		return TRUE;
 	}
 	return FALSE;
+}
+
+
+double ATBAE::GetTimeSecond(string MusicFileName)
+{
+	if (m_IsInit)
+	{
+		HSTREAM Stream = ATBAE::GetStream(MusicFileName);
+		unsigned __int64 StreamLen = BASS_ChannelGetLength(Stream, BASS_POS_BYTE);
+		return BASS_ChannelBytes2Seconds(Stream, StreamLen);
+	}
+	return 0;
+}
+double ATBAE::GetTimeMinute(string MusicFileName)
+{
+	return ATBAE::GetTimeSecond(MusicFileName) / 60.0;
+}
+double ATBAE::GetTimeHour(string MusicFileName)
+{
+	return ATBAE::GetTimeMinute(MusicFileName) / 60.0;
+}
+double ATBAE::GetCurTimeSecond(string MusicFileName)
+{
+	if (m_IsInit)
+	{
+		HSTREAM Stream = ATBAE::GetStream(MusicFileName);
+		return BASS_ChannelBytes2Seconds(Stream, BASS_ChannelGetPosition(Stream, BASS_POS_BYTE));
+	}
+	return 0;
+}
+double ATBAE::GetCurTimeMinute(string MusicFileName)
+{
+	return ATBAE::GetCurTimeSecond(MusicFileName) / 60.0;
+}
+double ATBAE::GetCurTimeHour(string MusicFileName)
+{
+	return ATBAE::GetCurTimeMinute(MusicFileName) / 60.0;
+}
+unsigned __int64 ATBAE::GetCurPoint(string MusicFileName)
+{
+	if (m_IsInit)
+	{
+		return BASS_ChannelGetPosition(ATBAE::GetStream(MusicFileName), BASS_POS_BYTE);
+	}
+	return 0;
+}
+BOOL ATBAE::SetTimeSecond(string MusicFileName, double Second)
+{
+	if (m_IsInit)
+	{
+		HSTREAM Stream = ATBAE::GetStream(MusicFileName);
+		unsigned __int64 CurPoint = BASS_ChannelSeconds2Bytes(Stream, Second);
+		ATBAE::PauseMusics(MusicFileName);
+		if (BASS_ChannelSetPosition(Stream, CurPoint, BASS_POS_BYTE))
+		{
+			return ATBAE::PlayMusics(MusicFileName, FALSE);
+		}
+	}
+	return FALSE;
+}
+BOOL ATBAE::SetTimeMinute(string MusicFileName, double Minute)
+{
+	return ATBAE::SetTimeSecond(MusicFileName, Minute * 60.0);
+}
+BOOL ATBAE::SetTimeHour(string MusicFileName, double Hour)
+{
+	return ATBAE::SetTimeMinute(MusicFileName, Hour * 60.0);
 }

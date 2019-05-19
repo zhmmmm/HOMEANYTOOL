@@ -12,6 +12,12 @@
 #include "../Object.h"
 
 
+//AT BASS 音频 引擎
+/*
+采取的是流播放,还有更多的功能
+*/
+#include "../ATBAudioEngine/ATBAudioEngine.h"
+
 
 #define AT_INITOPENGL 0
 
@@ -267,6 +273,54 @@ public:
 	}
 
 	static const ATATSCALE2D ZERO;
+};
+
+class ATATSCALE3D
+{
+public:
+	float X = 0;
+	float Y = 0;
+	float Z = 0;
+
+	ATATSCALE3D() {}
+	ATATSCALE3D(float X, float Y, float Z)
+	{
+		this->X = X;
+		this->Y = Y;
+		this->Z = Z;
+	}
+	ATATSCALE3D(float X, float Y)
+	{
+		this->X = X;
+		this->Y = Y;
+		this->Z = 1.0f;
+	}
+	float Get_X()
+	{
+		return this->X;
+	}
+	float Get_Y()
+	{
+		return this->Y;
+	}
+	float Get_Z()
+	{
+		return this->Z;
+	}
+	void Set_X(float X)
+	{
+		this->X = X;
+	}
+	void Set_Y(float Y)
+	{
+		this->Y = Y;
+	}
+	void Set_Z(float Z)
+	{
+		this->Z = Z;
+	}
+
+	static const ATATSCALE3D ZERO;
 };
 
 class ATATCONTENTSIZE

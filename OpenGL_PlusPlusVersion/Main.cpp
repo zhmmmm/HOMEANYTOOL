@@ -23,6 +23,8 @@ void OnWindowsChange(int width, int height)
 {
 	std::cout << "Ë¢ÐÂ OnWindowsChange" << std::endl;
 	std::cout << width << " " << height << std::endl;
+	g_Object.m_CurWindowsWidth = width;
+	g_Object.m_CurWindowsHeight = height;
 	ATENGINE->ATENGINE_WindowsChangeMatrixModeAndOrtho3D(GL_PROJECTION,
 		width, height,
 		MATRIXMODE::CENTER);
