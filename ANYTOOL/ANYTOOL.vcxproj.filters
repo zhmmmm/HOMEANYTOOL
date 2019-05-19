@@ -36,13 +36,10 @@
     <ClInclude Include="MAIN_FUNCTION.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Bitbmp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CMyBass.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DDOS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ATBAudioEngine.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,13 +59,10 @@
     <ClCompile Include="MAIN_FUNCTION.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Bitbmp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CMyBass.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="DDOS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ATBAudioEngine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

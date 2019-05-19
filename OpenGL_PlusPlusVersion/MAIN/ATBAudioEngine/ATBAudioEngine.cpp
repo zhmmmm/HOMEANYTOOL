@@ -406,6 +406,11 @@ void ATBAE::DeleteAllSound()
 		m_SoundMap.clear();
 	}
 }
+void ATBAE::DeleteAllMusicAndSounds()
+{
+	ATBAE::DeleteAllMusic();
+	ATBAE::DeleteAllSound();
+}
 BOOL ATBAE::FreeATA()
 {
 	if (m_IsInit)

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ATBAudioEngine.h"
 
 ATBAE::ATBAE()
