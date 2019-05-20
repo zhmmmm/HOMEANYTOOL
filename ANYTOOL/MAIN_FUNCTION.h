@@ -12,6 +12,10 @@ using namespace std;
 #define TYPE__ONE__                      (1)
 #define SETTIME_BEGIN_DDOS 	SetTimer((TYPE__ONE__), (100), (NULL));
 #define KILLTIME_END_DDOS       KillTimer((TYPE__ONE__));
+
+#define MUSICS__GETPROGRESSINFODATA__                 (0)
+#define SETTIME_MUSICS__GETPROGRESSINFODATA__BEGIN_MUSIC 	SetTimer((MUSICS__GETPROGRESSINFODATA__), (1), (NULL));
+#define KILLTIME_MUSICS__GETPROGRESSINFODATA__END_MUSIC       KillTimer((MUSICS__GETPROGRESSINFODATA__));
 //================================================
 
 
@@ -86,7 +90,13 @@ class FUNCTION
 	std::string m_String;
 
 	int m_ISDDOS = 0;
-
+	int m_ISPlayMusic = 0;
+	CString m_CurPlayerMusic;
+	CProgressCtrl *m_MusicProgress = NULL;
+	CSliderCtrl *m_EditMusicProgress = NULL;
+	CSliderCtrl *m_EditMusicVolume = NULL;
+	CMFCButton *m_PauseMusic = NULL;
+	int m_ISPauseMusic = 0;
 public:
 	//初始编辑框的内容
 	void INIT_CEditControl(CEdit *CEditControl, CString Text);
@@ -139,4 +149,16 @@ public:
 	void PlayFrameAnimation(CDC *pCDC);
 	//PlayMusic
 	void PlayerMusic();
+	//PauseMusic
+	void PauseMusic();
+	//初始化音乐进度信息数据
+	void InitMusicProgressInfoData(CProgressCtrl *MusicProgress, CSliderCtrl *EditMusicProgress, CSliderCtrl *EditMusicVolume, CMFCButton *PauseMusic);
+	//是否在播放音乐
+	int IsPlayMusic();
+	//获取音乐信息数据来自AT引擎
+	void GetMusicInfoDataFromATBAudioEngine();
+	//设置音乐进度
+	void SetMusicProgress();
+	//设置音乐音量
+	void SetMusicVolume();
 };

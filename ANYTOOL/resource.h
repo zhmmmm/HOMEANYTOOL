@@ -31,6 +31,7 @@
 #define IDC_SLIDER1                     1023
 #define IDC_SLIDER2                     1024
 #define IDC_SLIDER3                     1025
+#define IDC_MFCBUTTON8                  1026
 
 // Next default values for new objects
 // 

@@ -559,10 +559,82 @@ void FUNCTION::PlayerMusic()
 	if (CFileDialog.DoModal() == IDOK)
 	{
 		ATA->DeleteAllMusicAndSounds();
+		m_CurPlayerMusic = CFileDialog.GetPathName();
 		ATA->PlayMusics(MAIN::CString_To_String(CFileDialog.GetPathName()));
+		m_ISPlayMusic = 1;
+	}
+}
+void FUNCTION::PauseMusic()
+{
+	if (m_ISPlayMusic == 1)
+	{
+		if (m_ISPauseMusic == 0)
+		{
+			m_PauseMusic->SetWindowTextW(CString("StartMusic"));
+			ATA->PauseAllMusics();
+			m_ISPlayMusic = 1;
+			m_ISPauseMusic = 1;
+			return;
+		}
+		if (m_ISPauseMusic == 1)
+		{
+			m_PauseMusic->SetWindowTextW(CString("PauseMusic"));
+			ATA->PlayMusics(MAIN::CString_To_String(m_CurPlayerMusic), FALSE);
+			m_ISPlayMusic = 1;
+			m_ISPauseMusic = 0;
+			return;
+		}
 	}
 }
 
+void FUNCTION::InitMusicProgressInfoData(CProgressCtrl *MusicProgress, CSliderCtrl *EditMusicProgress, CSliderCtrl *EditMusicVolume, CMFCButton *PauseMusic)
+{
+	m_MusicProgress = MusicProgress;
+	m_EditMusicProgress = EditMusicProgress;
+	m_EditMusicVolume = EditMusicVolume;
+	m_PauseMusic = PauseMusic;
+	MusicProgress->SetPos(0);
+	EditMusicProgress->SetPos(0);
+	if (EditMusicVolume->GetPos()) {}
+	else
+	{
+		EditMusicVolume->SetPos(50);
+	}
+}
+
+int FUNCTION::IsPlayMusic()
+{
+	return m_ISPlayMusic;
+}
+
+void FUNCTION::GetMusicInfoDataFromATBAudioEngine()
+{
+	if (m_ISPlayMusic == 1)
+	{
+		string MusicName = MAIN::CString_To_String(m_CurPlayerMusic);
+
+		m_MusicProgress->SetPos((100 / ATA->GetTimeMinute(MusicName)) * (ATA->GetCurTimeMinute(MusicName)));
+	}
+}
+
+void FUNCTION::SetMusicProgress()
+{
+	if (m_ISPlayMusic == 1)
+	{
+		string MusicName = MAIN::CString_To_String(m_CurPlayerMusic);
+		double Scale = (((double)ATA->GetTimeMinute(MusicName)) / (double)100);
+		ATA->SetTimeMinute(MusicName,
+			(double)(m_EditMusicProgress->GetPos()) * Scale);
+	}
+}
+
+void FUNCTION::SetMusicVolume()
+{
+	if (m_ISPlayMusic == 1)
+	{
+		ATA->SetVolume(m_EditMusicVolume->GetPos());
+	}
+}
 
 
 

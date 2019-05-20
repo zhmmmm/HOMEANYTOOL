@@ -59,6 +59,7 @@ void CANYTOOLDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS1, m_MusicProgress);
 	DDX_Control(pDX, IDC_SLIDER1, m_EditMusicProgress);
 	DDX_Control(pDX, IDC_SLIDER2, m_EditMusicVolume);
+	DDX_Control(pDX, IDC_MFCBUTTON8, m_PauseMusic);
 }
 
 BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
@@ -66,6 +67,8 @@ BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_HSCROLL()
+	ON_WM_VSCROLL()
 	ON_BN_CLICKED(IDC_BUTTON1, &CANYTOOLDlg::OnBnClicked_StartLOIC)
 	ON_BN_CLICKED(IDC_BUTTON2, &CANYTOOLDlg::OnBnClicked_StartGoldWave)
 
@@ -84,7 +87,11 @@ BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_MFCBUTTON6, &CANYTOOLDlg::OnBnClicked_OpenVideoFile)
 	ON_BN_CLICKED(IDC_BUTTON5, &CANYTOOLDlg::OnBnClicked_Sound__R)
 	ON_BN_CLICKED(IDC_MFCBUTTON7, &CANYTOOLDlg::OnBnClicked_PlayMusic)
-	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER2, &CANYTOOLDlg::OnNMCustomdrawSlider2)
+	ON_BN_CLICKED(IDC_MFCBUTTON8, &CANYTOOLDlg::OnBnClicked_PauseMusic)
+
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER2, &CANYTOOLDlg::OnNMCustomdrawSlider_EditMusicVolume)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER1, &CANYTOOLDlg::OnNMCustomdrawSlider_EditMusicProgress)
+
 END_MESSAGE_MAP()
 
 
@@ -214,7 +221,10 @@ void CANYTOOLDlg::Init_DATA()
 	MAIN_M_FUNCTION->INIT_CEditControl(&m_ImageType, CString("ImageType"));
 	MAIN_M_FUNCTION->INIT_CEditControl(&m_FrameNumber, CString("FramePerSecond"));
 
-	m_EditMusicVolume.SetRange(0, 100,TRUE);
+	m_EditMusicProgress.SetRange(0, 100);
+	m_EditMusicProgress.SetTicFreq(10);
+	m_EditMusicVolume.SetRange(0, 100);
+	m_EditMusicVolume.SetTicFreq(10);
 }
 //===============================================
 void CANYTOOLDlg::OnBnClicked_StartLOIC()
@@ -261,8 +271,16 @@ void CANYTOOLDlg::OnBnClicked_Sound__R()
 void CANYTOOLDlg::OnBnClicked_PlayMusic()
 {
 	MAIN_M_FUNCTION->PlayerMusic();
-	m_MusicProgress.SetRange(0, 100);
-	m_MusicProgress.SetPos(40);
+	if (MAIN_M_FUNCTION->IsPlayMusic() == 1)
+	{
+		MAIN_M_FUNCTION->InitMusicProgressInfoData(&m_MusicProgress, &m_EditMusicProgress, &m_EditMusicVolume, &m_PauseMusic);
+		SETTIME_MUSICS__GETPROGRESSINFODATA__BEGIN_MUSIC;
+	}
+}
+
+void CANYTOOLDlg::OnBnClicked_PauseMusic()
+{
+	MAIN_M_FUNCTION->PauseMusic();
 }
 
 //================================================
@@ -325,10 +343,19 @@ void CANYTOOLDlg::OnBnClicked_Exit()
 
 void CANYTOOLDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	std::cout << "消息" << std::endl;
-
 	switch (nIDEvent)
 	{
+	case MUSICS__GETPROGRESSINFODATA__:
+	{
+		if (MAIN_M_FUNCTION->IsPlayMusic() == 0)
+		{
+			KILLTIME_MUSICS__GETPROGRESSINFODATA__END_MUSIC;
+		}
+		else
+		{
+			MAIN_M_FUNCTION->GetMusicInfoDataFromATBAudioEngine();
+		}
+	}; break;
 	case TYPE__ONE__:
 	{
 		std::cout << "一种恶意程序正在工作,请不要乱点击 ！" << std::endl;
@@ -339,13 +366,66 @@ void CANYTOOLDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
+//===================================================================================
+void CANYTOOLDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	m_nSBCode = nSBCode;
+}
+void CANYTOOLDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	std::cout << "OnVScroll nSBCode " << nSBCode << std::endl;
+	std::cout << "OnVScroll nPos " << nPos << std::endl;
 
-void CANYTOOLDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
+}
+void CANYTOOLDlg::OnNMCustomdrawSlider_EditMusicProgress(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
-	std::cout << pNMHDR->code << std::endl;
-	std::cout << pNMHDR->idFrom << std::endl;
-	std::cout << *pResult << std::endl;
-	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	if (m_nSBCode == SB_THUMBTRACK)//滚动中
+	{
+		m_nSBCode = 0;
+	}
+	if (m_nSBCode == SB_ENDSCROLL)//结束滚动
+	{
+		MAIN_M_FUNCTION->SetMusicProgress();
+		m_nSBCode = 0;
+	}
+
+
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 	*pResult = 0;
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	UpdateData(FALSE);
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 }
+void CANYTOOLDlg::OnNMCustomdrawSlider_EditMusicVolume(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	UpdateData(TRUE);
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	if (m_nSBCode == SB_THUMBTRACK)//滚动中
+	{
+		m_nSBCode = 0;
+	}
+	if (m_nSBCode == SB_ENDSCROLL)//结束滚动
+	{
+		MAIN_M_FUNCTION->SetMusicVolume();
+		m_nSBCode = 0;
+	}
+
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	UpdateData(FALSE);
+	*pResult = 0;
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+}
+

@@ -47,6 +47,8 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnLButtonDown(UINT nFlags,CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 
 private:
 	CEdit m_IPEdit;
@@ -64,6 +66,7 @@ public:
 	afx_msg void OnBnClicked_OpenVideoFile();
 	afx_msg void OnBnClicked_Sound__R();
 	afx_msg void OnBnClicked_PlayMusic();
+	afx_msg void OnBnClicked_PauseMusic();
 
 	CEdit m_VideoPath;
 	CEdit m_ImageType;
@@ -72,5 +75,10 @@ public:
 	CProgressCtrl m_MusicProgress;
 	CSliderCtrl m_EditMusicProgress;
 	CSliderCtrl m_EditMusicVolume;
-	afx_msg void OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult);
+	CMFCButton m_PauseMusic;
+	UINT m_nSBCode = 0;
+	afx_msg void OnNMCustomdrawSlider_EditMusicProgress(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawSlider_EditMusicVolume(NMHDR *pNMHDR, LRESULT *pResult);
+
+
 };
