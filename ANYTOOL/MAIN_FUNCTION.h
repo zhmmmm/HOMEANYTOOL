@@ -1,10 +1,13 @@
 #pragma once
-#include "stdafx.h"
 #include "TOOL.h"
-#include "ATBAudioEngine.h"
 #include <string>
 #include <iostream>
 #include "DDOS.h"
+//嵌入OpenGL
+#include "ImplantOpenGL.h"
+#include "Scene.h"
+
+#pragma comment(lib,"ATENGINE\\bin\\ATENGINE.lib")
 
 using namespace std;
 
@@ -16,6 +19,14 @@ using namespace std;
 #define MUSICS__GETPROGRESSINFODATA__                 (0)
 #define SETTIME_MUSICS__GETPROGRESSINFODATA__BEGIN_MUSIC 	SetTimer((MUSICS__GETPROGRESSINFODATA__), (1), (NULL));
 #define KILLTIME_MUSICS__GETPROGRESSINFODATA__END_MUSIC       KillTimer((MUSICS__GETPROGRESSINFODATA__));
+
+
+
+#define ATENGINE__ATUPDATEDATA__DRAW                 (2)
+#define ATENGINE__ATUPDATEDATA__DRAW_BEGIN     SetTimer((ATENGINE__ATUPDATEDATA__DRAW), (1), (NULL));
+#define ATENGINE__ATUPDATEDATA__DRAW_END        KillTimer((ATENGINE__ATUPDATEDATA__DRAW));
+
+
 //================================================
 
 
@@ -106,6 +117,7 @@ public:
 	const char *CString_To_ConstChar(CString String);
 	// CString 转 string
 	std::string CString_To_String(CString String);
+	void Char_To_Wchar_T(wchar_t *Buf, int BufSize, const char *String);
 	// 获取当前exe运行目录
 	char *GetCur_ExeRunPath(char *Buffer, int BufferLen);
 	// 启动低轨道粒子炮

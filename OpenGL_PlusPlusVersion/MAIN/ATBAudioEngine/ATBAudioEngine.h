@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 #define ATA ATBAE::GetInstance()
 #define SAMPLING_RATE (44100) //音乐采样率
 
@@ -23,6 +24,8 @@ class ATBAE
 	//音量
 	unsigned long m_Volume = 100;
 	BOOL m_IsPlayMusic = FALSE;
+	//当前播放的音乐
+	string m_CurPlayMusic;
 public:
 	static ATBAE *GetInstance();
 	BOOL InitAudioEngine();
@@ -32,6 +35,7 @@ public:
 	BOOL LoadSounds(string SoundFileName, DWORD Flags = BASS_SAMPLE_MONO);
 	BOOL SetVolume(int Volume = 100);
 	DWORD GetVolume() { return m_Volume; }
+	string GetCurPlayMusic(){return m_CurPlayMusic;}
 	HSTREAM GetStream(string AudioFileName);
 	BOOL VolumeReduce();//--
 	BOOL VolumeAdd();//++

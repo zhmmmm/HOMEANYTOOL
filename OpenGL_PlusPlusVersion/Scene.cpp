@@ -38,10 +38,10 @@ void Scene::Update()
 		Y = Buf[i] * 1000;
 
 		AT->CreateQuadrangle(
-			ATATRGB::RED, ATATPOS3D(X, Y, 0),
+			ATATRGB::GREEN, ATATPOS3D(X, Y, 0),
 			ATATRGB::WHITE, ATATPOS3D(X, 0, 0),
 			ATATRGB::WHITE, ATATPOS3D(X + W, 0, 0),
-			ATATRGB::RED, ATATPOS3D(X + W, Y, 0));
+			ATATRGB::GREEN, ATATPOS3D(X + W, Y, 0));
 
 		X = X + W + WSpace;
 		Y = 190;

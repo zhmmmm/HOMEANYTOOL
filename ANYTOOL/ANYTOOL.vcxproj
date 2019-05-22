@@ -77,6 +77,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Administrator\Desktop\ANYTOOL\ANYTOOL\ATENGINE\OpenGL\INCLUDE;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\Administrator\Desktop\ANYTOOL\ANYTOOL\ATENGINE\OpenGL\LIB;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -185,10 +187,28 @@
   <ItemGroup>
     <ClInclude Include="ANYTOOL.h" />
     <ClInclude Include="ANYTOOLDlg.h" />
-    <ClInclude Include="ATBAudioEngine.h" />
+    <ClInclude Include="ATENGINE\MAIN\ATBAudioEngine\ATBAudioEngine.h" />
+    <ClInclude Include="ATENGINE\MAIN\BITMAP.h" />
+    <ClInclude Include="ATENGINE\MAIN\Camera.h" />
+    <ClInclude Include="ATENGINE\MAIN\Gadget\Gadget.h" />
+    <ClInclude Include="ATENGINE\MAIN\HeaderFile\HeaderFile.h" />
+    <ClInclude Include="ATENGINE\MAIN\MatrixPackage\CMatrix3.h" />
+    <ClInclude Include="ATENGINE\MAIN\MatrixPackage\CMatrix4.h" />
+    <ClInclude Include="ATENGINE\MAIN\MatrixPackage\CVictor2D.h" />
+    <ClInclude Include="ATENGINE\MAIN\Object.h" />
+    <ClInclude Include="ATENGINE\MAIN\OpenGLDefine\OpenGL_Define.h" />
+    <ClInclude Include="ATENGINE\MAIN\OpenGL_AY_Engine.h" />
+    <ClInclude Include="ATENGINE\MAIN\Textures.h" />
+    <ClInclude Include="ATENGINE\MAIN\Vector3D_Matrix4D\CMatrix_4.h" />
+    <ClInclude Include="ATENGINE\MAIN\Vector3D_Matrix4D\CVector3D.h" />
+    <ClInclude Include="ATENGINE\ThirdPartyLibraries\NOTHINGS_STD\stb_image.h" />
+    <ClInclude Include="ATENGINE\ThirdPartyLibraries\NOTHINGS_STD\stb_image_resize.h" />
+    <ClInclude Include="ATENGINE\ThirdPartyLibraries\NOTHINGS_STD\stb_image_write.h" />
     <ClInclude Include="DDOS.h" />
+    <ClInclude Include="ImplantOpenGL.h" />
     <ClInclude Include="MAIN_FUNCTION.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TOOL.h" />
@@ -196,9 +216,11 @@
   <ItemGroup>
     <ClCompile Include="ANYTOOL.cpp" />
     <ClCompile Include="ANYTOOLDlg.cpp" />
-    <ClCompile Include="ATBAudioEngine.cpp" />
+    <ClCompile Include="ATENGINE\MAIN\OpenGLDefine\OpenGL_Define.cpp" />
     <ClCompile Include="DDOS.cpp" />
+    <ClCompile Include="ImplantOpenGL.cpp" />
     <ClCompile Include="MAIN_FUNCTION.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

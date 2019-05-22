@@ -181,7 +181,7 @@ public:
 		GLUT_SINGLE | GLUT_RGBA 单缓冲 + 颜色缓冲区
 		GLUT_DOUBLE | GLUT_RGBA 双缓冲 + 颜色缓冲区
 	*/
-	void InitMode(unsigned int Define, int window_X = 100, int window_Y = 100, int Width = 800, int Height = 600);
+	void InitMode(unsigned int Define, int window_X, int window_Y, int Width, int Height);
 
 	//初始化_设置窗口客户区相对于桌面左上角的位置
 	void InitWindowPos(int window_X = 0, int window_Y = 0);

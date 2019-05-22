@@ -3,13 +3,17 @@
 
 #define MAIN_M_FUNCTION             (&(m_Function))
 #define ANYTOOLWINDOWS             CANYTOOLDlg
+#define MAIN_M_IOGL                        (&(m_ImplantOpenGL))
+#define SCENE                                       (&(m_Object))
+
 
 // CANYTOOLDlg 对话框
 class CANYTOOLDlg : public CDialogEx
 {
 
 	MAIN m_Function;
-
+	IOGL m_ImplantOpenGL;
+	Scene m_Object;
 
 // 构造
 public:
@@ -32,9 +36,11 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
-	afx_msg void OnDraw(CDC *pCDC);
+	afx_msg void OnDestroy();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnSize(UINT nType,int cx,int cy);
+	afx_msg void OnMouseMove(UINT nType, CPoint Pos);
+	void ControlAdaptive(int X, int Y);
 
 	DECLARE_MESSAGE_MAP()//消息映射宏
 
@@ -80,5 +86,6 @@ public:
 	afx_msg void OnNMCustomdrawSlider_EditMusicProgress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawSlider_EditMusicVolume(NMHDR *pNMHDR, LRESULT *pResult);
 
-
+public:
+	CRect m_Rect;
 };

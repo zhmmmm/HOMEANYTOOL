@@ -38,6 +38,20 @@ string FUNCTION::CString_To_String(CString String)
 	return ToString;
 }
 
+void FUNCTION::Char_To_Wchar_T(wchar_t *Buf, int BufSize, const char *String)
+{
+	if (Buf && String)
+	{
+		if (strlen(String) > BufSize) { return; }
+		int i = 0;
+		while (String[i])
+		{
+			Buf[i] = String[i];
+			i++;
+		}
+	}
+}
+
 char *FUNCTION::GetCur_ExeRunPath(char *Buffer, int BufferLen)
 {
 	wchar_t Buf[256] = { 0 };
@@ -222,6 +236,7 @@ void FUNCTION::Get_ComputerIP()
 	std::string hostName = buf;//此处获得本机名称
 
 	ph = gethostbyname(buf);
+	//GetAddrInfoW();
 
 	int i = 0;
 	while (ph->h_addr_list[i] != NULL)
@@ -613,7 +628,7 @@ void FUNCTION::GetMusicInfoDataFromATBAudioEngine()
 	{
 		string MusicName = MAIN::CString_To_String(m_CurPlayerMusic);
 
-		m_MusicProgress->SetPos((100 / ATA->GetTimeMinute(MusicName)) * (ATA->GetCurTimeMinute(MusicName)));
+		m_MusicProgress->SetPos((int)(100 / ATA->GetTimeMinute(MusicName)) * (ATA->GetCurTimeMinute(MusicName)));
 	}
 }
 

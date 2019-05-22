@@ -45,7 +45,7 @@ typedef struct stPixColor
 	unsigned char R;
 }PIXCOLOR, *LPPIXCOLOR;
 
-typedef struct POSITION
+typedef struct ATPOSITION
 {
 	float X = 0;
 	float Y = 0;
