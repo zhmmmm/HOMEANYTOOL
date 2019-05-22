@@ -613,7 +613,7 @@ void FUNCTION::InitMusicProgressInfoData(CProgressCtrl *MusicProgress, CSliderCt
 	if (EditMusicVolume->GetPos()) {}
 	else
 	{
-		EditMusicVolume->SetPos(50);
+		EditMusicVolume->SetPos(100);
 	}
 }
 
