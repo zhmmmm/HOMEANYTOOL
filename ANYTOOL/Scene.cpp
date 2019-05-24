@@ -93,7 +93,7 @@ void Scene::OnOrdinaryKeyboardDownEvent(unsigned char Key, int X, int Y)
 	}
 	if (Key == VK_RETURN)
 	{
-		exit(0);
+		//exit(0);
 	}
 }
 void Scene::OnMouseMoveEvent(int Mouse_X, int Mouse_Y)

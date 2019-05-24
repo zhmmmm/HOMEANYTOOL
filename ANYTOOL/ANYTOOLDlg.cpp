@@ -333,12 +333,15 @@ void CANYTOOLDlg::OnBnClicked_GetComputerName()
 void CANYTOOLDlg::OnBnClicked_OpenVideoFile()
 {
 	CString VideoPathName = MAIN_M_FUNCTION->CreateCFileDialog();
-	MAIN_M_FUNCTION->Set_CEditControl(&m_VideoPath, VideoPathName);
-	CString ImageType;
-	CString FrameNumber;
-	m_ImageType.GetWindowText(ImageType);
-	m_FrameNumber.GetWindowText(FrameNumber);
-	MAIN_M_FUNCTION->EditVideoBecomeFrame(VideoPathName, ImageType, FrameNumber);
+	if (!VideoPathName.IsEmpty())
+	{
+		MAIN_M_FUNCTION->Set_CEditControl(&m_VideoPath, VideoPathName);
+		CString ImageType;
+		CString FrameNumber;
+		m_ImageType.GetWindowText(ImageType);
+		m_FrameNumber.GetWindowText(FrameNumber);
+		MAIN_M_FUNCTION->EditVideoBecomeFrame(VideoPathName, ImageType, FrameNumber);
+	}
 }
 
 void CANYTOOLDlg::OnBnClicked_Sound__R()
@@ -417,6 +420,10 @@ void CANYTOOLDlg::OnBnClicked_Ended()
 
 void CANYTOOLDlg::OnBnClicked_Exit()
 {
+	MAIN_M_FUNCTION->PauseMusic();
+	ATENGINE__ATUPDATEDATA__DRAW_END;
+	KILLTIME_MUSICS__GETPROGRESSINFODATA__END_MUSIC;
+	ATA->UninstallAudioEngine();
 	exit(0);
 }
 
